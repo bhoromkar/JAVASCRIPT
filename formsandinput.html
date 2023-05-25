@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Form</title>
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Form</h1>
+  <form id="userForm">
+    <div>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required>
+      <span id="firstNameError" class="error"></span>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <span id="emailError" class="error"></span>
+    </div>
+    <div>
+      <label for="mobile">Mobile:</label>
+      <input type="text" id="mobile" name="mobile" required>
+      <span id="mobileError" class="error"></span>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <span id="passwordError" class="error"></span>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById('userForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      validateForm();
+    });
+
+    function validateForm() {
+      const firstName = document.getElementById('firstName').value;
+      const email = document.getElementById('email').value;
+      const mobile = document.getElementById('mobile').value;
+      const password = document.getElementById('password').value;
+
+      const firstNameError = document.getElementById('firstNameError');
+      const emailError = document.getElementById('emailError');
+      const mobileError = document.getElementById('mobileError');
+      const passwordError = document.getElementById('passwordError');
+
+      firstNameError.textContent = '';
+      emailError.textContent = '';
+      mobileError.textContent = '';
+      passwordError.textContent = '';
+
+      const isFirstNameValid = /^[A-Z][a-zA-Z]{2,}$/.test(firstName);
+      const isEmailValid = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/.test(email);
+      const isMobileValid = /^\d{2}\s\d{10}$/.test(mobile);
+      const isPasswordValid = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/.test(password);
+
+      if (!isFirstNameValid) {
+        firstNameError.textContent = 'First name should start with a capital letter and have at least 3 characters.';
+      }
+      if (!isEmailValid) {
+        emailError.textContent = 'Invalid email format.';
+      }
+      if (!isMobileValid) {
+        mobileError.textContent = 'Mobile number should follow the format: 91 9919819801.';
+      }
+      if (!isPasswordValid) {
+        passwordError.textContent = 'Password should have a minimum of 8 characters, 1 uppercase letter, 1 numeric digit, and 1 special character.';
+      }
+
+      if (isFirstNameValid && isEmailValid && isMobileValid && isPasswordValid) {
+        // Form is valid, submit or perform further actions
+        document.getElementById('userForm').submit();
+      }
+    }
